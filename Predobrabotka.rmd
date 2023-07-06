@@ -1,0 +1,436 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#загрузка данных
+library(readxl)
+
+Netflix_Dataset_Movie = read.csv("Netflix_Dataset_Movie_F.csv")
+Netflix_Dataset_Rating = read.csv("Netflix_Dataset_Rating_F.csv")
+Netflix_Dataset_Rating_Latest_2021 = read_excel("Netflix Dataset Latest 2021.xlsx")
+Netflix_Dataset<- Netflix_Dataset_Latest_2021 
+```
+ 
+```{r}
+#убираем число и месяц из даты релиза
+library(dplyr)
+library(lubridate)
+Netflix_Dataset$`Release Date`=ymd(Netflix_Dataset$`Release Date`)
+Netflix_Dataset$`Release Date`=year(Netflix_Dataset$`Release Date`)
+```
+
+```{r}
+library (stringr)
+genre_count=str_count(Netflix_Dataset$Genre, "\\w+")
+max(na.omit(genre_count))
+```
+
+```{r}
+#разбиваем на полки жанры
+Netflix_Dataset = Netflix_Dataset %>% mutate(Genre.shelf.1 = word(Genre, 1))
+Netflix_Dataset$Genre.shelf.1=str_remove(Netflix_Dataset$Genre.shelf.1, ",")
+Netflix_Dataset = Netflix_Dataset %>% mutate(Genre.shelf.2 = word(Genre, 2))
+Netflix_Dataset$Genre.shelf.2=str_remove(Netflix_Dataset$Genre.shelf.2, ",")
+Netflix_Dataset = Netflix_Dataset%>% mutate(Genre.shelf.3 = word(Genre, 3))
+Netflix_Dataset$Genre.shelf.3=str_remove(Netflix_Dataset$Genre.shelf.3, ",")
+Netflix_Dataset = Netflix_Dataset %>% mutate(Genre.shelf.4 = word(Genre, 4))
+Netflix_Dataset$Genre.shelf.4=str_remove(Netflix_Dataset$Genre.shelf.4, ",")
+Netflix_Dataset = Netflix_Dataset %>% mutate(Genre.shelf.5 = word(Genre, 5))
+Netflix_Dataset$Genre.shelf.5=str_remove(Netflix_Dataset$Genre.shelf.5, ",")
+Netflix_Dataset = Netflix_Dataset%>% mutate(Genre.shelf.6 = word(Genre, 6))
+Netflix_Dataset$Genre.shelf.6=str_remove(Netflix_Dataset$Genre.shelf.6, ",")
+Netflix_Dataset = Netflix_Dataset %>% mutate(Genre.shelf.7 = word(Genre, 7))
+Netflix_Dataset$Genre.shelf.7=str_remove(Netflix_Dataset$Genre.shelf.7, ",")
+Netflix_Dataset = Netflix_Dataset %>% mutate(Genre.shelf.8 = word(Genre, 8))
+Netflix_Dataset$Genre.shelf.8=str_remove(Netflix_Dataset$Genre.shelf.8, ",")
+Netflix_Dataset= Netflix_Dataset %>% mutate(Genre.shelf.9 = word(Genre, 9))
+Netflix_Dataset$Genre.shelf.9=str_remove(Netflix_Dataset$Genre.shelf.9, ",")
+Netflix_Dataset= Netflix_Dataset %>% mutate(Genre.shelf.10 = word(Genre, 10))
+Netflix_Dataset$Genre.shelf.10=str_remove(Netflix_Dataset$Genre.shelf.10, ",")
+Netflix_Dataset = Netflix_Dataset %>% mutate(Genre.shelf.11 = word(Genre, 11))
+Netflix_Dataset$Genre.shelf.11=str_remove(Netflix_Dataset$Genre.shelf.11, ",")
+Netflix_Dataset = Netflix_Dataset %>% mutate(Genre.shelf.12 = word(Genre, 12))
+Netflix_Dataset$Genre.shelf.12=str_remove(Netflix_Dataset$Genre.shelf.12, ",")
+Netflix_Dataset = Netflix_Dataset %>% mutate(Genre.shelf.13 = word(Genre, 13))
+```
+
+```{r}
+#разбиваем на полки тэги
+library(tidyr)
+Netflix_Dataset<-Netflix_Dataset%>%mutate(Tags_shelved=strsplit(Netflix_Dataset$Tags,","))
+Netflix_Dataset<-Netflix_Dataset %>% unnest_wider(Tags_shelved, names_sep = "_")
+```
+
+```{r}
+
+#На случай, если надо переименовать, чтобы было в одном стиле
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.1"="Tags_shelved_1")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.2"="Tags_shelved_2")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.3"="Tags_shelved_3")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.4"="Tags_shelved_4")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.5"="Tags_shelved_5")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.6"="Tags_shelved_6")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.7"="Tags_shelved_7")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.8"="Tags_shelved_8")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.9"="Tags_shelved_9")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.10"="Tags_shelved_10")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.11"="Tags_shelved_11")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.12"="Tags_shelved_12")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.13"="Tags_shelved_13")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.14"="Tags_shelved_14")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.15"="Tags_shelved_15")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.16"="Tags_shelved_16")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.17"="Tags_shelved_17")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.18"="Tags_shelved_18")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.19"="Tags_shelved_19")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.20"="Tags_shelved_20")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.21"="Tags_shelved_21")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.22"="Tags_shelved_22")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.23"="Tags_shelved_23")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.24"="Tags_shelved_24")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.25"="Tags_shelved_25")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.26"="Tags_shelved_26")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.27"="Tags_shelved_27")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.28"="Tags_shelved_28")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.29"="Tags_shelved_29")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.30"="Tags_shelved_30")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.31"="Tags_shelved_31")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.32"="Tags_shelved_32")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Tags.shelf.33"="Tags_shelved_33")
+```
+
+```{r}
+#разбиваем языки на полки
+Netflix_Dataset<-Netflix_Dataset%>%mutate(Lang_shelved=strsplit(Netflix_Dataset$Languages,", "))
+Netflix_Dataset<-Netflix_Dataset %>% unnest_wider(Lang_shelved, names_sep = "_")
+```
+
+``` {r}
+
+#На случай, если надо переименовать, чтобы было в одном стиле
+Netflix_Dataset<-Netflix_Dataset%>%rename("Lang.shelf.1"="Lang_shelved_1")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Lang.shelf.2"="Lang_shelved_2")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Lang.shelf.3"="Lang_shelved_3")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Lang.shelf.4"="Lang_shelved_4")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Lang.shelf.5"="Lang_shelved_5")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Lang.shelf.6"="Lang_shelved_6")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Lang.shelf.7"="Lang_shelved_7")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Lang.shelf.8"="Lang_shelved_8")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Lang.shelf.9"="Lang_shelved_9")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Lang.shelf.10"="Lang_shelved_10")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Lang.shelf.11"="Lang_shelved_11")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Lang.shelf.12"="Lang_shelved_12")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Lang.shelf.13"="Lang_shelved_13")
+Netflix_Dataset<-Netflix_Dataset%>%rename("Lang.shelf.14"="Lang_shelved_14")
+```
+
+``` {r}
+#переходим к построению дерева
+#Создаем датасет Netflix_data_tree специально только для дерева
+#Удалим полки, так как сейчас они не потребуются и не имеют смысла для дерева
+Netflix_data_tree<-Netflix_Dataset
+Netflix_data_tree<-Netflix_data_tree%>%select(-Genre.shelf.3,-Genre.shelf.4,-Genre.shelf.5,-Genre.shelf.5,-Genre.shelf.6,-Genre.shelf.7,-Genre.shelf.8,-Genre.shelf.9,-Genre.shelf.10,-Genre.shelf.11,-Genre.shelf.12,-Genre.shelf.13)
+
+Netflix_data_tree<-Netflix_data_tree%>%select(-Lang.shelf.3,-Lang.shelf.4,-Lang.shelf.5,-Lang.shelf.5,-Lang.shelf.6,-Lang.shelf.7,-Lang.shelf.8,-Lang.shelf.9,-Lang.shelf.10,-Lang.shelf.11,-Lang.shelf.12,-Lang.shelf.13,-Lang.shelf.14)
+
+Netflix_data_tree<-Netflix_data_tree%>%select(-Tags.shelf.3,-Tags.shelf.4,-Tags.shelf.5,-Tags.shelf.5,-Tags.shelf.6,-Tags.shelf.7,-Tags.shelf.8,-Tags.shelf.9,-Tags.shelf.10,-Tags.shelf.11,-Tags.shelf.12,-Tags.shelf.13,-Tags.shelf.14,-Tags.shelf.15,-Tags.shelf.16,-Tags.shelf.17,-Tags.shelf.18,-Tags.shelf.19,-Tags.shelf.20,-Tags.shelf.21,-Tags.shelf.22,-Tags.shelf.23,-Tags.shelf.24,-Tags.shelf.25,-Tags.shelf.26,-Tags.shelf.27,-Tags.shelf.28,-Tags.shelf.29,-Tags.shelf.30,-Tags.shelf.31,-Tags.shelf.32,-Tags.shelf.33)
+
+#Также удалим и Теги, Жанры, Языки - они продублированы дальше в полках
+Netflix_data_tree<-Netflix_data_tree%>%select(-Tags,-Genre,-Languages)
+#Удалим колонку с полной датой, так как у нас есть отдельная с годом, этого достаточно
+Netflix_data_tree<-Netflix_data_tree%>%select(-`Netflix Release Date`)
+#Уберем все столбцы, которые содержат ссылки (на фильм или на постер и т.п. - они ни к чему при построении дерева)
+Netflix_data_tree<-Netflix_data_tree%>%select(-`Netflix Link`,-`IMDb Link`, -Image, -Poster,-`TMDb Trailer`)
+#Для предсказания текст сюжета также вряд ли важен
+Netflix_data_tree<-Netflix_data_tree%>%select(-Summary)
+#Превратим все character в факторные переменные
+Netflix_data_tree$Title<-as.factor(Netflix_data_tree$Title)
+Netflix_data_tree$`Series or Movie`<-as.factor(Netflix_data_tree$`Series or Movie`)
+Netflix_data_tree$`Country Availability`<-as.factor(Netflix_data_tree$`Country Availability`)
+Netflix_data_tree$Runtime<-as.factor(Netflix_data_tree$Runtime)
+Netflix_data_tree$Director<-as.factor(Netflix_data_tree$Director)
+Netflix_data_tree$Writer<-as.factor(Netflix_data_tree$Writer)
+Netflix_data_tree$Actors<-as.factor(Netflix_data_tree$Actors)
+Netflix_data_tree$`View Rating`<-as.factor(Netflix_data_tree$`View Rating`)
+Netflix_data_tree$`Production House`<-as.factor(Netflix_data_tree$`Production House`)
+Netflix_data_tree$`Trailer Site`<-as.factor(Netflix_data_tree$`Trailer Site`)
+Netflix_data_tree$Genre.shelf.1<-as.factor(Netflix_data_tree$Genre.shelf.1)
+Netflix_data_tree$Genre.shelf.2<-as.factor(Netflix_data_tree$Genre.shelf.2)
+Netflix_data_tree$Lang.shelf.1<-as.factor(Netflix_data_tree$Lang.shelf.1)
+Netflix_data_tree$Lang.shelf.2<-as.factor(Netflix_data_tree$Lang.shelf.2)
+Netflix_data_tree$Tags.shelf.1<-as.factor(Netflix_data_tree$Tags.shelf.1)
+Netflix_data_tree$Tags.shelf.2<-as.factor(Netflix_data_tree$Tags.shelf.2)
+
+```
+
+```{r}
+#Попробуем построить дерево
+#Делим выборку на тестовую и обучающую
+library(rpart)
+library(rpart.plot)
+library(rsample)
+set.seed(100)
+split = initial_split(Netflix_data_tree, prop = 0.8)
+train = training(split)
+test = testing(split)
+
+#Строим
+tree <- rpart(`IMDb Score` ~., data = train)
+
+library(vip)
+vip:::vip(tree)
+#Тут самое важное - название, затем очень важный актеры, дальше примерно совпалает с последующим (см.ниже) - страна, writer и тп
+
+#Попробуем убрать еще и название
+Netflix_data_tree1<-Netflix_data_tree
+Netflix_data_tree1<-Netflix_data_tree1%>%select (-Title)
+
+set.seed(222)
+split = initial_split(Netflix_data_tree1, prop = 0.8)
+train1 = training(split)
+test1 = testing(split)
+#Делаем дерево так, потому что иначе не справляется R
+tree1 <- rpart(`IMDb Score` ~., data = train1)
+
+library(vip)
+vip:::vip(tree1)
+#Самые важные (БЕЗ НАЗВАНИЯ) - Актеры, затем по убыванию Country Availability,Writer,Hidden Gem Score, Tags shelf 1 Tags shelf 2 Director
+#Так как важны обе полки Tags, можно в целом к ней присмотреться
+#Жанры вообще не прорисовываются
+```
+
+``` {r}
+#Добавим в датасет деление актеров на полки
+#Netflix_Dataset<-Netflix_Dataset%>%mutate(Actors_shelved=strsplit(Netflix_Dataset$Actors,", "))
+#Netflix_Dataset<-Netflix_Dataset %>% unnest_wider(Actors_shelved)
+#Интересно, что везде практически по 4 актера - там какое-то ограничение в датасете?
+```
+
+``` {r}
+#Переименуем колонки с полками актеров
+#Netflix_Dataset<-Netflix_Dataset%>%rename("Actors.shelf.1"="...1")
+#Netflix_Dataset<-Netflix_Dataset%>%rename("Actors.shelf.2"="...2")
+#Netflix_Dataset<-Netflix_Dataset%>%rename("Actors.shelf.3"="...3")
+#Netflix_Dataset<-Netflix_Dataset%>%rename("Actors.shelf.4"="...4")
+```
+
+
+
+```{r}
+Netflix_Dataset2 = Netflix_Dataset %>% select(Title, `Series or Movie` , Summary,  Genre.shelf.1,Genre.shelf.2,Genre.shelf.3, Genre.shelf.4, Genre.shelf.5, Genre.shelf.6, Genre.shelf.7, Genre.shelf.8, Genre.shelf.9, Genre.shelf.10, Genre.shelf.12, Genre.shelf.13, Tags.shelf.1, Tags.shelf.2, Tags.shelf.3, Tags.shelf.4, Tags.shelf.5, Tags.shelf.6, Tags.shelf.7, Tags.shelf.8, Tags.shelf.9,  Tags.shelf.10, Tags.shelf.12, Tags.shelf.13, Tags.shelf.14, Tags.shelf.15, Tags.shelf.16,  Tags.shelf.17, Tags.shelf.18, Tags.shelf.19, Tags.shelf.20, Tags.shelf.21,  Tags.shelf.22, Tags.shelf.23, Tags.shelf.24, Tags.shelf.25, Tags.shelf.26, Tags.shelf.27, Tags.shelf.28,  Tags.shelf.29, Tags.shelf.30, Tags.shelf.31, Tags.shelf.32, Tags.shelf.33,`IMDb Score`)
+
+#write.csv(Netflix_Dataset2, file = "Netflix_Dataset")
+```
+
+
+
+
+
+```{r}
+  a = Netflix_Dataset_Movie[["Name"]] %in% Netflix_Dataset[["Title"]]
+
+Netflix_Dataset_Movie = Netflix_Dataset_Movie %>%
+  filter(Name %in% Netflix_Dataset[["Title"]])
+
+Netflix_Dataset_Rating = Netflix_Dataset_Rating %>%
+  filter(Movie_ID %in% Netflix_Dataset_Movie[["Movie_ID"]])
+
+# Рекомендации для нового пользователя------------------------------------------
+Movie_ID = c("48", "152", "175")
+User_ID = rep(c("person"),each=length(Movie_ID))
+Rating = c(2, 4, 5)
+
+person = data.frame(User_ID = User_ID, Movie_ID = Movie_ID, Rating = Rating)
+
+
+
+#-------------------------------------------------------------------------------
+df = Netflix_Dataset_Rating$User_ID
+j = as.data.frame(table(df))
+j = j %>% filter(Freq > 100)
+Netflix_Dataset_Rating = Netflix_Dataset_Rating %>%
+  filter(User_ID %in% j[["df"]])
+
+# добавим информацию о новом пользователе
+with_person = rbind(Netflix_Dataset_Rating, person)
+
+rates = pivot_wider(with_person, names_from = Movie_ID, values_from = Rating)
+head(rates)
+
+userNames = rates$User_ID
+rates = select(rates, -User_ID)
+
+# преобразование таблицы данных в матрицу
+rates = as.matrix(rates)
+rownames(rates) = userNames
+# преобразование матрицы в realRatingMatrix
+library(recommenderlab)
+r = as(rates, "realRatingMatrix")
+
+
+set.seed(100)
+test_ind <- sample(1:nrow(r), size = nrow(r)*0.2)
+recc_data_train <- r[-test_ind, ]
+recc_data_test <- r[test_ind, ]
+
+recc_model <- Recommender(data = recc_data_train, method = "IBCF")
+
+model_details <- getModel(recc_model)
+model_details$description
+model_details$sim[1:10, 1:10]
+
+recc_predicted <- predict(object = recc_model, newdata = r, n = 5)
+
+# рекомендация для пользователя с person
+recc_user <- recc_predicted@items[["person"]]
+movies_user <- recc_predicted@itemLabels[recc_user]
+names_movies_user <- Netflix_Dataset_Movie$Name[match(movies_user, Netflix_Dataset_Movie$Movie_ID)]
+names_movies_user
+
+
+```
+
+
+
+
+
+```{r}
+if (input$select = 0){
+ Netflix_Dataset = Netflix_Dataset %>% filter(Genre.shelf.1 %in% input$genres | Genre.shelf.2 %in% input$genres | Genre.shelf.3 %in% input$genres | Genre.shelf.4 %in% input$genres  |Genre.shelf.5 %in% input$genres | Genre.shelf.6 %in% input$genres  |Genre.shelf.7 %in% input$genres |Genre.shelf.8 %in% input$genres  | Genre.shelf.9 %in% input$genres | Genre.shelf.10 %in% input$genres  |Genre.shelf.12 %in% input$genres |Genre.shelf.13 %in% input$genres) %>% 
+  filter(Tags.shelf.1 %in% input$tags | Tags.shelf.2 %in% input$tags| Tags.shelf.3 %in% input$tags| Tags.shelf.4 %in% input$tags |Tags.shelf.5 %in% input$tags| Tags.shelf.6 %in% input$tags |Tags.shelf.7 %in% input$tags |Tags.shelf.8 %in% input$tags | Tags.shelf.9 %in% input$tags | Tags.shelf.10 %in% input$tags |Tags.shelf.12 %in% input$tags |Tags.shelf.13 %in% input$tags | Tags.shelf.14 %in% input$tags |Tags.shelf.15 %in% input$tags |Tags.shelf.16 %in% input$tags |Tags.shelf.17 %in% input$tags | Tags.shelf.18 %in% input$tags |Tags.shelf.19 %in% input$tags |Tags.shelf.20 %in% input$tags |Tags.shelf.21 %in% input$tags | Tags.shelf.22 %in% input$tags |Tags.shelf.23 %in% input$tags |Tags.shelf.24 %in% input$tags |Tags.shelf.25 %in% input$tags |  Tags.shelf.26 %in% input$tags|Tags.shelf.27 %in% input$tags |Tags.shelf.28 %in% input$tags |Tags.shelf.29 %in% input$tags | Tags.shelf.30 %in% input$tags |Tags.shelf.31 %in% input$tags |Tags.shelf.32 %in% input$tags |Tags.shelf.33 %in% input$tags) 
+} else{
+  Netflix_Dataset = Netflix_Dataset %>% filter(`Series or Movie` %in% input$select) %>% filter(Genre.shelf.1 %in% input$genres | Genre.shelf.2 %in% input$genres | Genre.shelf.3 %in% input$genres | Genre.shelf.4 %in% input$genres  |Genre.shelf.5 %in% input$genres | Genre.shelf.6 %in% input$genres  |Genre.shelf.7 %in% input$genres |Genre.shelf.8 %in% input$genres  | Genre.shelf.9 %in% input$genres | Genre.shelf.10 %in% input$genres  |Genre.shelf.12 %in% input$genres |Genre.shelf.13 %in% input$genres) %>% 
+  filter(Tags.shelf.1 %in% input$tags | Tags.shelf.2 %in% input$tags| Tags.shelf.3 %in% input$tags| Tags.shelf.4 %in% input$tags |Tags.shelf.5 %in% input$tags| Tags.shelf.6 %in% input$tags |Tags.shelf.7 %in% input$tags |Tags.shelf.8 %in% input$tags | Tags.shelf.9 %in% input$tags | Tags.shelf.10 %in% input$tags |Tags.shelf.12 %in% input$tags |Tags.shelf.13 %in% input$tags | Tags.shelf.14 %in% input$tags |Tags.shelf.15 %in% input$tags |Tags.shelf.16 %in% input$tags |Tags.shelf.17 %in% input$tags | Tags.shelf.18 %in% input$tags |Tags.shelf.19 %in% input$tags |Tags.shelf.20 %in% input$tags |Tags.shelf.21 %in% input$tags | Tags.shelf.22 %in% input$tags |Tags.shelf.23 %in% input$tags |Tags.shelf.24 %in% input$tags |Tags.shelf.25 %in% input$tags |  Tags.shelf.26 %in% input$tags|Tags.shelf.27 %in% input$tags |Tags.shelf.28 %in% input$tags |Tags.shelf.29 %in% input$tags | Tags.shelf.30 %in% input$tags |Tags.shelf.31 %in% input$tags |Tags.shelf.32 %in% input$tags |Tags.shelf.33 %in% input$tags) 
+  }
+
+
+
+na.omit(unique(Netflix_Dataset$Genre.shelf.2))
+```
+
+```{r}
+Netflix_Dataset_Movie = Netflix_Dataset_Movie %>%
+  filter(Name %in% Netflix_Dataset[["Title"]])
+
+Netflix_Dataset_Rating = Netflix_Dataset_Rating %>%
+  filter(Movie_ID %in% Netflix_Dataset_Movie[["Movie_ID"]])
+
+Netflix_Dataset = Netflix_Dataset %>% 
+  filter(Title %in% Netflix_Dataset_Movie[["Name"]])
+```
+
+```{r}
+Netflix_Dataset %>% arrange(`IMDb Score`) %>% top_n(10) %>%  select(Title)
+rate = # оценки фильмов
+checked = Netflix_Dataset_Movie[["Name"]]  %in%  Netflix_Dataset[["Title"]] 
+  
+Movie_ID = c()
+User_ID = rep(c("person"),each=length(Movie_ID))
+Rating = c()
+```
+
+
+
+```{r}
+recomendation <- function(rate, num){
+  
+  if(length(rate) < 3){
+    Netflix_Dataset %>% arrange(`IMDb Score`) %>% top_n(10) %>%  select(Title)
+  }
+  else{
+   
+
+person = data.frame(User_ID = User_ID, Movie_ID = Movie_ID, Rating = Rating)
+
+
+df = Netflix_Dataset_Rating$User_ID
+j = as.data.frame(table(df))
+j = j %>% filter(Freq > 100)
+Netflix_Dataset_Rating = Netflix_Dataset_Rating %>%
+  filter(User_ID %in% j[["df"]])
+
+# добавим информацию о новом пользователе
+with_person = rbind(Netflix_Dataset_Rating, person)
+
+rates = pivot_wider(with_person, names_from = Movie_ID, values_from = Rating)
+head(rates)
+
+userNames = rates$User_ID
+rates = select(rates, -User_ID)
+
+# преобразование таблицы данных в матрицу
+rates = as.matrix(rates)
+rownames(rates) = userNames
+# преобразование матрицы в realRatingMatrix
+library(recommenderlab)
+r = as(rates, "realRatingMatrix")
+
+
+set.seed(100)
+test_ind <- sample(1:nrow(r), size = nrow(r)*0.2)
+recc_data_train <- r[-test_ind, ]
+recc_data_test <- r[test_ind, ]
+
+recc_model <- Recommender(data = recc_data_train, method = "IBCF")
+
+model_details <- getModel(recc_model)
+model_details$description
+model_details$sim[1:10, 1:10]
+
+recc_predicted <- predict(object = recc_model, newdata = r, n = num)
+
+# рекомендация для пользователя с person
+recc_user <- recc_predicted@items[["person"]]
+movies_user <- recc_predicted@itemLabels[recc_user]
+names_movies_user <- Netflix_Dataset_Movie$Name[match(movies_user, Netflix_Dataset_Movie$Movie_ID)]
+names_movies_user
+  }
+  
+
+}
+```
+
+
+
+
+
+#работает
+```{r}
+select = c('Movie')
+input = as.data.frame(select)
+input = input %>% mutate(genres = "Si-Fi") %>% mutate(tags = "LGBTQ Movies")
+  
+ Netflix_Dataset =  Netflix_Dataset %>% 
+        filter(Series.or.Movie %in% input$select)
+ 
+  Netflix_Dataset = if (input$select == 0){
+      Netflix_Dataset = Netflix_Dataset %>% 
+        filter(Genre.shelf.1 %in% input$genres | Genre.shelf.2 %in% input$genres | Genre.shelf.3 %in% input$genres | Genre.shelf.4 %in% input$genres |Genre.shelf.5 %in% input$genres | Genre.shelf.6 %in% input$genres |Genre.shelf.7 %in% input$genres |Genre.shelf.8 %in% input$genres | Genre.shelf.9 %in% input$genres | Genre.shelf.10 %in% input$genres |Genre.shelf.12 %in% input$genres |Genre.shelf.13 %in% input$genres) %>%
+        filter(Tags.shelf.1 %in% input$tags | Tags.shelf.2 %in% input$tags| Tags.shelf.3 %in% input$tags| Tags.shelf.4 %in% input$tags |Tags.shelf.5 %in% input$tags| Tags.shelf.6 %in% input$tags |Tags.shelf.7 %in% input$tags |Tags.shelf.8 %in% input$tags | Tags.shelf.9 %in% input$tags | Tags.shelf.10 %in% input$tags |Tags.shelf.12 %in% input$tags |Tags.shelf.13 %in% input$tags | Tags.shelf.14 %in% input$tags |Tags.shelf.15 %in% input$tags |Tags.shelf.16 %in% input$tags |Tags.shelf.17 %in% input$tags | Tags.shelf.18 %in% input$tags |Tags.shelf.19 %in% input$tags |Tags.shelf.20 %in% input$tags |Tags.shelf.21 %in% input$tags | Tags.shelf.22 %in% input$tags |Tags.shelf.23 %in% input$tags |Tags.shelf.24 %in% input$tags |Tags.shelf.25 %in% input$tags | Tags.shelf.26 %in% input$tags|Tags.shelf.27 %in% input$tags |Tags.shelf.28 %in% input$tags |Tags.shelf.29 %in% input$tags | Tags.shelf.30 %in% input$tags |Tags.shelf.31 %in% input$tags |Tags.shelf.32 %in% input$tags |Tags.shelf.33 %in% input$tags)
+    } else{
+      Netflix_Dataset = Netflix_Dataset %>% 
+        filter(Series.or.Movie %in% input$select) %>% 
+        filter(Genre.shelf.1 %in% input$genres | Genre.shelf.2 %in% input$genres | Genre.shelf.3 %in% input$genres | Genre.shelf.4 %in% input$genres |Genre.shelf.5 %in% input$genres | Genre.shelf.6 %in% input$genres |Genre.shelf.7 %in% input$genres |Genre.shelf.8 %in% input$genres | Genre.shelf.9 %in% input$genres | Genre.shelf.10 %in% input$genres |Genre.shelf.12 %in% input$genres |Genre.shelf.13 %in% input$genres) %>%
+        filter(Tags.shelf.1 %in% input$tags | Tags.shelf.2 %in% input$tags| Tags.shelf.3 %in% input$tags| Tags.shelf.4 %in% input$tags |Tags.shelf.5 %in% input$tags| Tags.shelf.6 %in% input$tags |Tags.shelf.7 %in% input$tags |Tags.shelf.8 %in% input$tags | Tags.shelf.9 %in% input$tags | Tags.shelf.10 %in% input$tags |Tags.shelf.12 %in% input$tags |Tags.shelf.13 %in% input$tags | Tags.shelf.14 %in% input$tags |Tags.shelf.15 %in% input$tags |Tags.shelf.16 %in% input$tags |Tags.shelf.17 %in% input$tags | Tags.shelf.18 %in% input$tags |Tags.shelf.19 %in% input$tags |Tags.shelf.20 %in% input$tags |Tags.shelf.21 %in% input$tags | Tags.shelf.22 %in% input$tags |Tags.shelf.23 %in% input$tags |Tags.shelf.24 %in% input$tags |Tags.shelf.25 %in% input$tags | Tags.shelf.26 %in% input$tags|Tags.shelf.27 %in% input$tags |Tags.shelf.28 %in% input$tags |Tags.shelf.29 %in% input$tags | Tags.shelf.30 %in% input$tags |Tags.shelf.31 %in% input$tags |Tags.shelf.32 %in% input$tags |Tags.shelf.33 %in% input$tags)
+    } 
+ 
+ if (length(unique(Netflix_Dataset$Title)) >9 ){
+      Netflix_Dataset_Marks2 = Netflix_Dataset %>%
+      arrange(-IMDb.Score) %>%
+      slice(1:8) %>%
+      select(Title)
+      Netflix_Dataset_Marks2
+    } else {
+      "Пожалуйста, выберите другие параметры"
+    }
+```
+
+
